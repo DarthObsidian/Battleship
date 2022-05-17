@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="ShipButton" style="align-items: center; height: 100px;">
+        <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Assets/Sprites/Battleship.png?fileID=21300000&amp;guid=590bfcf28e64508458052821789ef2ae&amp;type=3#Battleship&apos;); width: 100%; height: 100%; -unity-background-scale-mode: scale-to-fit; flex-grow: 1;" />
+        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="ShipName" style="-unity-font-style: bold; font-size: 24px;" />
+    </ui:VisualElement>
+</ui:UXML>
