@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Entities;
 using UnityEngine.UIElements;
 
@@ -8,22 +9,20 @@ namespace UI
 {
     public class ShipButtonManager : MonoBehaviour
     {
-        public Ship[] ships;
+        public List<Ship> ships = new List<Ship>();
         public VisualTreeAsset shipUITemplate;
+        public static UnityAction<Ship> SendSelectedShip;
+        public static UnityAction ShipPlaced;
 
         UIDocument uiDocument;
         ListView listView;
-
-        public void ToggleShipButtons(bool _enabled)
-        {
-            listView.SetEnabled(_enabled);
-        }
 
         void Start()
         {
             uiDocument = GetComponent<UIDocument>();
             listView = uiDocument.rootVisualElement.Q<ListView>("ButtonListView");
             listView.onSelectionChange += OnShipSelected;
+            ShipPlaced += OnShipPlaced;
 
             InitializeListOfShipButtons();
         }
@@ -54,10 +53,15 @@ namespace UI
         {
             var selectedShip = listView.selectedItem as Ship;
 
-            if (selectedShip == null)
-                return;
+            SendSelectedShip?.Invoke(selectedShip);
+        }
 
-            //TODO: make the ships appear and place!
+        void OnShipPlaced()
+        {
+            ships.RemoveAt(listView.selectedIndex);
+            listView.Rebuild();
+            if (ships.Count <= 0)
+                listView.visible = false;
         }
     }
 }

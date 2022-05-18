@@ -30,5 +30,12 @@ namespace Board
             var component = tile.GetComponent<BoardTile>();
             tiles[x, y] = component;
         }
+
+        public bool IsValidTile(Transform _transform)
+        {
+            if (_transform != null && _transform.GetComponent<BoardTile>() != null)
+                return true;
+            return false;
+        }
     }
 }
