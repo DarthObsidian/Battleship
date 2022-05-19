@@ -211,6 +211,7 @@ GameObject:
   - component: {fileID: 479426507}
   - component: {fileID: 479426508}
   - component: {fileID: 479426509}
+  - component: {fileID: 479426510}
   m_Layer: 0
   m_Name: MainUIDocument
   m_TagString: Untagged
@@ -268,6 +269,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4aac853076ca2c7479c7840d93b7c503, type: 2}
   - {fileID: 11400000, guid: f3468b63f7d83094590220ad79938caa, type: 2}
   shipUITemplate: {fileID: 9197481963319205126, guid: e379226fc8f1b234eaf9383930aa2552, type: 3}
+--- !u!114 &479426510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479426506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b718c210bfd98e8448d224bc3c105d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitSprite: {fileID: 21300000, guid: 24c4e9368b8b9cc44becc588b023bb2a, type: 3}
+  missSprite: {fileID: 21300000, guid: 1735a9652a8cadf4da470289c9fca9cf, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

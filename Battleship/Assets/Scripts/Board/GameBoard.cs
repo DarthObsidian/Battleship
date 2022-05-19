@@ -27,13 +27,12 @@ namespace Board
             tile.transform.localPosition = new Vector3(x * cellSize, 0, y * cellSize);
             tile.name = $"Tile {x} {y}";
             
-            var component = tile.GetComponent<BoardTile>();
-            tiles[x, y] = component;
+            tiles[x, y] = new BoardTile();
         }
 
         public bool IsValidTile(Transform _transform)
         {
-            if (_transform != null && _transform.GetComponent<BoardTile>() != null)
+            if (_transform != null && _transform.name.Contains("Tile"))
                 return true;
             return false;
         }

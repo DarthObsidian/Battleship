@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Board
 {
-    public class BoardTile : MonoBehaviour
+    public class BoardTile
     {
         public bool occupied;
         public bool alreadyGuessed;

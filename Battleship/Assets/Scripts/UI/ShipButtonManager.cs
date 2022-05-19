@@ -13,16 +13,21 @@ namespace UI
         public VisualTreeAsset shipUITemplate;
         public static UnityAction<Ship> SendSelectedShip;
         public static UnityAction ShipPlaced;
+        public static UnityAction OutOfShips;
 
         UIDocument uiDocument;
+        VisualElement shipSelectionRoot;
         ListView listView;
 
         void Start()
         {
             uiDocument = GetComponent<UIDocument>();
-            listView = uiDocument.rootVisualElement.Q<ListView>("ButtonListView");
+            shipSelectionRoot = uiDocument.rootVisualElement.Q<VisualElement>("ShipSelection");
+            listView = shipSelectionRoot.Q<ListView>("ButtonListView");
             listView.onSelectionChange += OnShipSelected;
             ShipPlaced += OnShipPlaced;
+
+            shipSelectionRoot.style.display = DisplayStyle.Flex;
 
             InitializeListOfShipButtons();
         }
@@ -61,7 +66,10 @@ namespace UI
             ships.RemoveAt(listView.selectedIndex);
             listView.Rebuild();
             if (ships.Count <= 0)
-                listView.visible = false;
+            {
+                shipSelectionRoot.style.display = DisplayStyle.None;
+                OutOfShips?.Invoke();
+            }
         }
     }
 }
