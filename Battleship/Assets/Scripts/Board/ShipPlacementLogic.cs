@@ -14,6 +14,7 @@ namespace Board
         private GameObject currentShipObject;
         private Transform currentShipTransform;
         private float raycastOffset = 5;
+        private Vector3 shipEndPos;
 
         private void Awake()
         {
@@ -26,11 +27,11 @@ namespace Board
             //TODO: move Input into its own script
             if (currentShip == null)
                 return;
-
-            CalculateShipGridPos(Input.mousePosition);
+            var mousePos = Input.mousePosition;
+            CalculateShipGridPos(mousePos);
                 
             if (Input.GetMouseButtonDown(0))
-                PlaceCurrentShip();
+                PlaceCurrentShip(mousePos);
             if (Input.GetKeyDown(KeyCode.R))
                 RotateShipVisual();
         }
@@ -70,9 +71,9 @@ namespace Board
             if (shipStartTile == null)
                 return;
 
-            var endPos = CalculateEndTilePos(shipStartTile.position, currentShipTransform.rotation);
-            endPos.y = raycastOffset;
-            var shipEndTile = RaycastFromPosition(endPos);
+            var shipEndPos = CalculateEndTilePos(shipStartTile.position, currentShipTransform.rotation);
+            shipEndPos.y = raycastOffset;
+            var shipEndTile = RaycastFromPosition(shipEndPos);
 
             if (!board.IsValidTile(shipStartTile) || !board.IsValidTile(shipEndTile))
                 return;
@@ -106,10 +107,29 @@ namespace Board
             return hit.transform;
         }
 
-        private void PlaceCurrentShip()
+        private void PlaceCurrentShip(Vector3 _pos)
         {
+            if (RaycastFromCamera(_pos) == null)
+                return;
+
+            var tiles = GetTiles();
+            if (board.AreTilesOccupied(tiles))
+                return;
+
+            board.SetOccupiedTiles(tiles);
+
             ResetCurrentShip();
             ShipButtonManager.ShipPlaced?.Invoke();
+        }
+
+        private Vector2Int[] GetTiles()
+        {
+            Vector3 shipEndPos = CalculateEndTilePos(currentShipTransform.position, currentShipTransform.rotation);
+            
+            var shipStart = new Vector2(currentShipTransform.position.x, currentShipTransform.position.z);
+            var shipEnd = new Vector2(shipEndPos.x, shipEndPos.z);
+
+            return board.GatherTiles(shipStart, shipEnd, currentShip.hp);
         }
 
         private void RotateShipVisual()
