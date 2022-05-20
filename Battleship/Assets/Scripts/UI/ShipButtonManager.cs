@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Entities;
 using UnityEngine.UIElements;
+using Board;
 
 namespace UI
 {
@@ -13,7 +14,6 @@ namespace UI
         public VisualTreeAsset shipUITemplate;
         public static UnityAction<Ship> SendSelectedShip;
         public static UnityAction ShipPlaced;
-        public static UnityAction OutOfShips;
 
         UIDocument uiDocument;
         VisualElement shipSelectionRoot;
@@ -68,7 +68,7 @@ namespace UI
             if (ships.Count <= 0)
             {
                 shipSelectionRoot.style.display = DisplayStyle.None;
-                OutOfShips?.Invoke();
+                TurnManager.AllShipsPlaced?.Invoke();
             }
         }
     }

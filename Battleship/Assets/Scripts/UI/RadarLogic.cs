@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
+using Board;
 
 namespace UI
 {
@@ -10,6 +11,7 @@ namespace UI
     {
         public Sprite hitSprite;
         public Sprite missSprite;
+        public AILogic ai;
 
         UIDocument uiDocument;
         VisualElement radarRoot;
@@ -17,7 +19,7 @@ namespace UI
         Button grid;
         Button radarButton;
 
-        void Start()
+        private void Start()
         {
             uiDocument = GetComponent<UIDocument>();
             radarRoot = uiDocument.rootVisualElement.Q<VisualElement>("RadarRoot");
@@ -29,25 +31,31 @@ namespace UI
 
             radarButton.clicked += OnRadarButtonClick;
             grid.clicked += OnRadarGridClicked;
-            ShipButtonManager.OutOfShips += ActivateButton;
-
+            TurnManager.AllShipsPlaced += ActivateButton;
+            TurnManager.ActivateUI += HandleActivation;
 
             ToggleDisplay(radarRoot, false);
             ToggleDisplay(radarButtonRoot, false);
+            grid.SetEnabled(false);
         }
 
-        void OnRadarButtonClick()
+        private void HandleActivation()
+        {
+            grid.SetEnabled(true);
+        }
+
+        private void OnRadarButtonClick()
         {
             bool currentState = radarRoot.style.display == DisplayStyle.Flex;
             ToggleDisplay(radarRoot, !currentState);
         }
 
-        void ActivateButton()
+        private void ActivateButton()
         {
             ToggleDisplay(radarButtonRoot, true);
         }
 
-        void ToggleDisplay(VisualElement _displayElement, bool _on)
+        private void ToggleDisplay(VisualElement _displayElement, bool _on)
         {
             if (_on)
                 _displayElement.style.display = DisplayStyle.Flex;
@@ -55,18 +63,41 @@ namespace UI
                 _displayElement.style.display = DisplayStyle.None;
         }
 
-        void OnRadarGridClicked()
+        private void OnRadarGridClicked()
         {
+            Debug.Log("Radar clicked");
+
             Vector2 relativePos = MouseToGrid();
             Vector2 cell = CalculateCellNumber(relativePos);
 
+            if (cell.x < 0 || cell.y < 0)
+                return;
+
             var uiCell = FindUICell(new Vector2(Mathf.Abs(relativePos.x), Mathf.Abs(relativePos.y)));
-            if (uiCell != null)
+            if (uiCell == null)
+                return;
+
+            int x = (int)cell.x;
+            int y = (int)cell.y;
+
+            if (!ai.IsValidTile(x, y))
+                return;
+
+            if (ai.CheckIfTileGuessed(x, y))
+                return;
+
+            bool hit = ai.WasTileHit(x, y);
+
+            if (hit)
                 uiCell.style.backgroundImage = new StyleBackground(hitSprite);
-            Debug.Log(cell);
+            else
+                uiCell.style.backgroundImage = new StyleBackground(missSprite);
+
+            TurnManager.TurnFinished?.Invoke();
+            grid.SetEnabled(false);
         }
 
-        Vector2 MouseToGrid()
+        private Vector2 MouseToGrid()
         {
             var mousePos = Input.mousePosition;
             var x = mousePos.x - grid.worldBound.position.x;
@@ -74,7 +105,7 @@ namespace UI
             return new Vector2(x, y);
         }
 
-        Vector2 CalculateCellNumber(Vector2 _pos)
+        private Vector2 CalculateCellNumber(Vector2 _pos)
         {
             var cellSize = grid.layout.width / 11;
 
@@ -85,7 +116,7 @@ namespace UI
             return new Vector2(newX, newY);
         }
 
-        VisualElement FindUICell(Vector2 _pointerPos)
+        private VisualElement FindUICell(Vector2 _pointerPos)
         {
             return grid.Children().Where(x => x.layout.Contains(_pointerPos)).FirstOrDefault();
         }

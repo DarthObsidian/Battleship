@@ -4,29 +4,35 @@ using UnityEngine;
 
 namespace Board
 {
-    public class GameBoard : MonoBehaviour
+    public class GameBoard
     {
         public float cellSize;
         public Vector2Int gridSize;
         public GameObject tilePrefab;
 
         private BoardTile[,] tiles;
+        private int[,] shipMap;
 
-        private void Start()
+        public GameBoard(Vector2Int _size)
         {
+            gridSize = _size;
+            shipMap = new int[gridSize.x, gridSize.y];
             tiles = new BoardTile[gridSize.x, gridSize.y];
-
-            for (int x = 0; x < gridSize.x; x++)
-                for (int y = 0; y < gridSize.y; y++)
-                    SetupTile(x, y);
         }
 
-        private void SetupTile(int x, int y)
+        public int GetShipMapItem(int x, int y)
         {
-            var tile = Instantiate(tilePrefab, transform);
-            tile.transform.localPosition = new Vector3(x * cellSize, 0, y * cellSize);
-            tile.name = $"Tile {x} {y}";
-            
+            return shipMap[x, y];
+        }
+
+        public void SetShipInMap(Vector2Int[] _tiles, int _shipId)
+        {
+            foreach (var tile in _tiles)
+                shipMap[tile.x, tile.y] = _shipId;
+        }
+
+        public void SetTile(int x, int y)
+        {
             tiles[x, y] = new BoardTile();
         }
 
@@ -39,6 +45,8 @@ namespace Board
 
         public bool IsValidTile(int x, int y)
         {
+            if (y >= 10)
+                Debug.Log($"y is 10+ so it should be invalid {y < tiles.Length}");
             return x >= 0 && x < tiles.Length && y >= 0 && y < tiles.Length;
         }
 
@@ -67,10 +75,10 @@ namespace Board
             }
         }
 
-        public Vector2Int[] GatherTiles(Vector2 _start, Vector2 _end, int _shipLength)
+        public Vector2Int[] GatherTiles(Vector2 _start, Vector2 _end, int _length)
         {
 
-            Vector2Int[] foundTiles = new Vector2Int[_shipLength];
+            Vector2Int[] foundTiles = new Vector2Int[_length];
             
             int x = (int)_start.x;
             int y = (int)_start.y;
@@ -79,7 +87,7 @@ namespace Board
 
             var direction = GetDirection(_start, _end);
 
-            for (int i = 0; i < _shipLength; i++)
+            for (int i = 0; i < _length; i++)
             {
                 if (!IsValidTile(x, y))
                     continue;
@@ -107,6 +115,16 @@ namespace Board
         public bool IsTileOccupied(int x, int y)
         {
             return IsValidTile(x, y) && tiles[x, y].occupied;
+        }
+
+        public void SetTileGuessed(int x, int y)
+        {
+            tiles[x, y].alreadyGuessed = true;
+        }
+
+        public bool IsTileGuessed(int x, int y)
+        {
+            return tiles[x, y].alreadyGuessed;
         }
     }
 }

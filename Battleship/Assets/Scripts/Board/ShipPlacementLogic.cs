@@ -7,14 +7,13 @@ namespace Board
 {
     public class ShipPlacementLogic : MonoBehaviour
     {
-        public GameBoard board;
+        public PlayerLogic player;
 
         private Camera mainCam;
         private Ship currentShip;
         private GameObject currentShipObject;
         private Transform currentShipTransform;
         private float raycastOffset = 5;
-        private Vector3 shipEndPos;
 
         private void Awake()
         {
@@ -50,6 +49,9 @@ namespace Board
             currentShip = _selectedShip;
             currentShipObject = Instantiate(currentShip.visual);
             currentShipTransform = currentShipObject.transform;
+
+            var shipLogic = currentShipObject.GetComponent<RuntimeShip>();
+            shipLogic.Setup(currentShip, "Player");
         }
 
         private void DestroyCurrentShip()
@@ -75,7 +77,7 @@ namespace Board
             shipEndPos.y = raycastOffset;
             var shipEndTile = RaycastFromPosition(shipEndPos);
 
-            if (!board.IsValidTile(shipStartTile) || !board.IsValidTile(shipEndTile))
+            if (!player.IsValidTile(shipStartTile) || !player.IsValidTile(shipEndTile))
                 return;
 
             currentShipTransform.position = shipStartTile.position;
@@ -113,11 +115,12 @@ namespace Board
                 return;
 
             var tiles = GetTiles();
-            if (board.AreTilesOccupied(tiles))
+            if (player.AreTilesOccupied(tiles))
                 return;
 
-            board.SetOccupiedTiles(tiles);
+            player.SetOccupiedTiles(tiles);
 
+            player.AddShip(currentShipObject);
             ResetCurrentShip();
             ShipButtonManager.ShipPlaced?.Invoke();
         }
@@ -129,17 +132,18 @@ namespace Board
             var shipStart = new Vector2(currentShipTransform.position.x, currentShipTransform.position.z);
             var shipEnd = new Vector2(shipEndPos.x, shipEndPos.z);
 
-            return board.GatherTiles(shipStart, shipEnd, currentShip.hp);
+            return player.GatherTiles(shipStart, shipEnd, currentShip.hp);
         }
 
         private void RotateShipVisual()
         {
-            var endRot = new Vector3(currentShipTransform.eulerAngles.x, currentShipTransform.eulerAngles.y + 90, currentShipTransform.eulerAngles.z);
+            var endRot = new Vector3(currentShipTransform.eulerAngles.x, currentShipTransform.eulerAngles.y + 90, 
+                currentShipTransform.eulerAngles.z);
             var endPos = CalculateEndTilePos(currentShipTransform.position, Quaternion.Euler(endRot));
             endPos.y = raycastOffset;
             var shipEndTile = RaycastFromPosition(endPos);
 
-            if (board.IsValidTile(shipEndTile))
+            if (player.IsValidTile(shipEndTile))
                 currentShipTransform.Rotate(Vector3.up, 90);
         }
     }
