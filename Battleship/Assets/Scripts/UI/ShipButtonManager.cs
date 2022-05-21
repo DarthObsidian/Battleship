@@ -19,20 +19,26 @@ namespace UI
         VisualElement shipSelectionRoot;
         ListView listView;
 
-        void Start()
+        private void Start()
         {
             uiDocument = GetComponent<UIDocument>();
             shipSelectionRoot = uiDocument.rootVisualElement.Q<VisualElement>("ShipSelection");
             listView = shipSelectionRoot.Q<ListView>("ButtonListView");
             listView.onSelectionChange += OnShipSelected;
             ShipPlaced += OnShipPlaced;
+            StartMenu.StartClicked += HandleStartClicked;
 
             shipSelectionRoot.style.display = DisplayStyle.Flex;
 
             InitializeListOfShipButtons();
         }
 
-        void InitializeListOfShipButtons()
+        private void HandleStartClicked()
+        {
+            shipSelectionRoot.style.translate = new Translate(0, 0, 0);
+        }
+
+        private void InitializeListOfShipButtons()
         {
             listView.makeItem = () =>
             {
@@ -54,14 +60,14 @@ namespace UI
             listView.itemsSource = ships;
         }
 
-        void OnShipSelected(IEnumerable<object> _selectedItems)
+        private void OnShipSelected(IEnumerable<object> _selectedItems)
         {
             var selectedShip = listView.selectedItem as Ship;
 
             SendSelectedShip?.Invoke(selectedShip);
         }
 
-        void OnShipPlaced()
+        private void OnShipPlaced()
         {
             ships.RemoveAt(listView.selectedIndex);
             listView.Rebuild();

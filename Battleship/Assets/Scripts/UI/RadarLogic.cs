@@ -114,7 +114,7 @@ namespace UI
             else
                 uiCell.style.backgroundImage = new StyleBackground(missSprite);
 
-            TurnManager.TurnFinished?.Invoke();
+            TurnManager.TurnFinished?.Invoke(false);
             grid.SetEnabled(false);
         }
 

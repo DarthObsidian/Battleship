@@ -9,35 +9,32 @@ namespace Board
     {
         public static UnityAction<string> AllShipsSunk;
         public static UnityAction<string> Message;
-        public static UnityAction TurnFinished;
+        public static UnityAction<bool> TurnFinished;
         public static UnityAction<bool> ToggleUI;
         public static UnityAction AllShipsPlaced;
+        public static UnityAction PlayerReady;
 
         public PlayerLogic player;
         public AILogic ai;
 
         bool isPlayerTurn;
         bool gameOver;
+        bool playerReady;
+        Coroutine waiter;
+        Coroutine aiTurn;
 
         private void Awake()
         {
+            PlayerReady += HandlePlayerReady;
             AllShipsSunk += HandleAllShipsSunk;
-            Message += HandleMessage;
             TurnFinished += HandleTurnFinished;
             AllShipsPlaced += HandleAllShipsPlaced;
         }
 
-        private void Start()
-        {
-            isPlayerTurn = Random.value > 0.4f;
-            if (isPlayerTurn)
-                ToggleUI?.Invoke(true);
-        }
-
         private void HandleAllShipsPlaced()
         {
-            if (!isPlayerTurn)
-                StartCoroutine(Waiter());
+            isPlayerTurn = Random.value > 0.4f;
+            TurnFinished?.Invoke(isPlayerTurn);
         }
 
         private void DoAITurn()
@@ -47,8 +44,7 @@ namespace Board
 
             _ = player.WasTileHit(target.x, target.y);
 
-            isPlayerTurn = true;
-            ToggleUI?.Invoke(true);
+            TurnFinished?.Invoke(true);
         }
 
         private void HandleAllShipsSunk(string _id)
@@ -59,21 +55,41 @@ namespace Board
             string winner = "AI";
             if (_id == winner)
                 winner = "Player";
-
-            Debug.Log($"ALL SHIPS OF {_id} HAVE BEEN SUNK {winner} WON");
+            Message?.Invoke($"ALL SHIPS OF {_id} HAVE BEEN SUNK {winner} WON!");
         }
 
-        private void HandleMessage(string _message)
-        {
-            Debug.Log(_message);
-        }
-
-        private void HandleTurnFinished()
+        private void HandleTurnFinished(bool _isPlayerTurn)
         {
             if (gameOver)
                 return;
-            isPlayerTurn = false;
-            StartCoroutine(Waiter());
+            isPlayerTurn = _isPlayerTurn;
+
+            if (!isPlayerTurn)
+            {
+                if (aiTurn != null)
+                    StopCoroutine(aiTurn);
+                aiTurn = StartCoroutine(StartAITurn());
+                return;
+            }
+
+            ToggleUI?.Invoke(true);
+        }
+
+        private void HandlePlayerReady()
+        {
+            if(!isPlayerTurn)
+                playerReady = true;
+        }
+
+        private IEnumerator StartAITurn()
+        {
+            while (!playerReady)
+                yield return null;
+
+            if (waiter != null)
+                StopCoroutine(waiter);
+            waiter = StartCoroutine(Waiter());
+            playerReady = false;
         }
 
         private IEnumerator Waiter()

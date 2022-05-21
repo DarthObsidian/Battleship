@@ -754,6 +754,9 @@ GameObject:
   - component: {fileID: 479426508}
   - component: {fileID: 479426509}
   - component: {fileID: 479426510}
+  - component: {fileID: 479426511}
+  - component: {fileID: 479426512}
+  - component: {fileID: 479426513}
   m_Layer: 5
   m_Name: MainUIDocument
   m_TagString: UI
@@ -826,6 +829,42 @@ MonoBehaviour:
   hitSprite: {fileID: 21300000, guid: 24c4e9368b8b9cc44becc588b023bb2a, type: 3}
   missSprite: {fileID: 21300000, guid: 1735a9652a8cadf4da470289c9fca9cf, type: 3}
   ai: {fileID: 191168077}
+--- !u!114 &479426511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479426506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f0d2c688e8434fbc2926bd273fa92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &479426512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479426506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bfa413d691e1342afb6bdca70002fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &479426513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479426506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b429ef359a7000643b863b7aa7ae9b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &494617566
 GameObject:
   m_ObjectHideFlags: 0
@@ -2169,6 +2208,8 @@ MonoBehaviour:
   tilePrefab: {fileID: 8901518014705796422, guid: d3bb9bfcb133b3a469262fe787379fcf, type: 3}
   hitObject: {fileID: 6412544527465916144, guid: 17ab052c26f0cd848ac5a972510e4d79, type: 3}
   missObject: {fileID: 9046500312063130727, guid: a2f20295b8e664848a5da6a6e79150ce, type: 3}
+  hitPosOffset: 0.7
+  missPosOffset: 0.12
 --- !u!1 &1816821959
 GameObject:
   m_ObjectHideFlags: 0

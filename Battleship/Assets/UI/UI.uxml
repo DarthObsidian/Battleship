@@ -1,13 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=ce74dd35ed4cf0c458de137ffd4f30a8&amp;type=3#Styles" />
     <ui:VisualElement name="Root" style="flex-direction: row; flex-grow: 1; border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px;">
-        <ui:VisualElement name="ShipSelection" style="flex-grow: 1; align-items: center; justify-content: center; display: none;">
+        <ui:VisualElement name="ShipSelection" style="flex-grow: 1; align-items: center; justify-content: center; display: flex; transition-property: translate; transition-duration: 0.3s; translate: -100% 0;">
             <ui:ListView focusable="true" name="ButtonListView" style="position: absolute; left: 0; flex-direction: column; width: 30%; top: 0; bottom: 0;" />
         </ui:VisualElement>
-        <ui:VisualElement name="RadarButtonRoot" style="width: 10%; height: 100%; flex-direction: column-reverse;">
+        <ui:VisualElement name="RadarButtonRoot" style="width: 10%; height: 100%; flex-direction: column-reverse; display: none;">
             <ui:Button tabindex="-1" display-tooltip-when-elided="true" name="radarButton" class="radarButton" style="translate: 0 150%; transition-timing-function: ease-out-back; transition-duration: 0.5s; transition-property: translate; transition-delay: 0s;" />
         </ui:VisualElement>
-        <ui:VisualElement name="RadarRoot" style="flex-grow: 1; translate: 110% 0; transition-property: translate; transition-duration: 0.5s; transition-timing-function: ease-out-back;">
+        <ui:VisualElement name="RadarRoot" style="flex-grow: 1; translate: 110% 0; transition-property: translate; transition-duration: 0.5s; transition-timing-function: ease-out-back; display: none;">
             <UI.AspectRatioPanel aspect-ratio-x="1" aspect-ratio-y="1" balance-x="50" balance-y="50" name="RadarAspectRatioPanel" style="flex-shrink: 0; border-left-color: rgb(0, 100, 0); border-right-color: rgb(0, 100, 0); border-top-color: rgb(0, 100, 0); border-bottom-color: rgb(0, 100, 0); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px; background-color: rgb(1, 67, 9); display: flex; flex-grow: 1;">
                 <ui:VisualElement name="Body" style="flex-direction: row; height: 100%; width: 100%;">
                     <ui:Button tabindex="-1" display-tooltip-when-elided="true" name="Grid" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
@@ -175,6 +175,28 @@
                     </ui:Button>
                 </ui:VisualElement>
             </UI.AspectRatioPanel>
+        </ui:VisualElement>
+        <ui:VisualElement name="TurnNotification" style="position: absolute; height: 30%; transition-property: translate; transition-duration: 0.3s; background-color: rgb(183, 183, 183); align-items: center; justify-content: center; flex-direction: row; left: 25%; right: 25%; translate: 0 -300%;">
+            <ui:Label tabindex="-1" text="ENEMY" display-tooltip-when-elided="true" name="TurnNameLabel" style="-unity-font-style: bold; width: 45%; height: 80%; justify-content: center; align-items: center; -unity-text-align: upper-right; font-size: 20%;" />
+            <ui:Label tabindex="-1" text="TURN" display-tooltip-when-elided="true" name="TurnLabel" style="width: 45%; height: 80%; -unity-text-align: upper-left; font-size: 20%; -unity-font-style: bold;" />
+            <ui:Button tabindex="-1" text="Okay" display-tooltip-when-elided="true" name="Okay" enable-rich-text="false" class="okayButton" />
+        </ui:VisualElement>
+        <ui:VisualElement name="StartScreen" style="position: absolute; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: row; display: none;">
+            <ui:VisualElement name="Spacer" style="width: 20%; height: 60%; background-color: rgb(183, 183, 183); border-left-color: rgb(111, 111, 111); border-right-color: rgb(111, 111, 111); border-top-color: rgb(111, 111, 111); border-bottom-color: rgb(111, 111, 111); border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px;">
+                <ui:Label tabindex="-1" text="Press &apos;R&apos; to rotate your ships." display-tooltip-when-elided="true" style="flex-wrap: wrap; white-space: normal; font-size: 16px; -unity-font-style: bold; padding-left: 2px;" />
+                <ui:Label tabindex="-1" text="Press the Left Mouse Button to place your ships." display-tooltip-when-elided="true" style="flex-wrap: wrap; white-space: normal; font-size: 16px; padding-left: 2px; -unity-font-style: bold;" />
+                <ui:Label tabindex="-1" text="Once all ships have been placed, select the radar to open your map and choose your target." display-tooltip-when-elided="true" style="flex-wrap: wrap; white-space: normal; font-size: 16px; -unity-font-style: bold;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Body" style="flex-grow: 1; width: 50%; align-items: center; justify-content: center; background-color: rgb(183, 183, 183); border-left-width: 10px; border-right-width: 10px; border-top-width: 10px; border-bottom-width: 10px; border-left-color: rgb(111, 111, 111); border-right-color: rgb(111, 111, 111); border-top-color: rgb(111, 111, 111); border-bottom-color: rgb(111, 111, 111); height: 90%;">
+                <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Assets/Art/Sprites/Battleship.png?fileID=21300000&amp;guid=590bfcf28e64508458052821789ef2ae&amp;type=3#Battleship&apos;); width: 289px; height: 164px; -unity-background-scale-mode: scale-to-fit;" />
+                <ui:Button tabindex="-1" text="Start" display-tooltip-when-elided="true" name="StartButton" class="okayButton" style="position: relative; left: auto; right: auto; bottom: auto; width: 30%;" />
+                <ui:Label tabindex="-1" text="BATTLESHIP" display-tooltip-when-elided="true" name="BattleshipLabel" style="position: absolute; bottom: 0; -unity-font-style: bold; font-size: 24px; color: rgb(255, 255, 255); background-color: rgb(0, 0, 121); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; width: 50%; -unity-text-align: middle-center;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Spacer" style="width: 20%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="MessageRoot" style="position: absolute; height: 30%; transition-property: translate; transition-duration: 0.3s; background-color: rgb(183, 183, 183); align-items: center; justify-content: center; flex-direction: row; left: 25%; right: 25%; bottom: 5%; translate: 0 150%;">
+            <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="MessageText" style="-unity-font-style: bold; width: 90%; height: 50%; justify-content: center; align-items: center; -unity-text-align: upper-center; font-size: 20%; bottom: 15%; white-space: normal;" />
+            <ui:Button tabindex="-1" text="Okay" display-tooltip-when-elided="true" name="Okay" enable-rich-text="false" class="okayButton" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
