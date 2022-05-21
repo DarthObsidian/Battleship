@@ -2166,7 +2166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellSize: 1
   gridSize: {x: 10, y: 10}
-  tilePrefab: {fileID: 8903181277071433576, guid: d3bb9bfcb133b3a469262fe787379fcf, type: 3}
+  tilePrefab: {fileID: 8901518014705796422, guid: d3bb9bfcb133b3a469262fe787379fcf, type: 3}
   hitObject: {fileID: 6412544527465916144, guid: 17ab052c26f0cd848ac5a972510e4d79, type: 3}
   missObject: {fileID: 9046500312063130727, guid: a2f20295b8e664848a5da6a6e79150ce, type: 3}
 --- !u!1 &1816821959
@@ -2184,7 +2184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1816821960
 Transform:
   m_ObjectHideFlags: 0

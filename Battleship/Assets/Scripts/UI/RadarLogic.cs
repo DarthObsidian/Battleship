@@ -18,6 +18,7 @@ namespace UI
         VisualElement radarButtonRoot;
         Button grid;
         Button radarButton;
+        bool radarActive;
 
         private void Start()
         {
@@ -46,13 +47,16 @@ namespace UI
 
         private void OnRadarButtonClick()
         {
-            bool currentState = radarRoot.style.display == DisplayStyle.Flex;
-            ToggleDisplay(radarRoot, !currentState);
+            radarActive = !radarActive;
+
+            TranslateRadar(radarActive);
         }
 
         private void ActivateButton()
         {
             ToggleDisplay(radarButtonRoot, true);
+            ToggleDisplay(radarRoot, true);
+            StartCoroutine(WaitToTranslateButton());
         }
 
         private void ToggleDisplay(VisualElement _displayElement, bool _on)
@@ -61,6 +65,25 @@ namespace UI
                 _displayElement.style.display = DisplayStyle.Flex;
             else
                 _displayElement.style.display = DisplayStyle.None;
+        }
+
+        private IEnumerator WaitToTranslateButton()
+        {
+            yield return new WaitForSeconds(0.2f);
+            TranslateRadarButton();
+        }
+         
+        private void TranslateRadarButton()
+        {
+            radarButton.style.translate = new Translate(0, 0, 0);
+        }
+
+        private void TranslateRadar(bool _state)
+        {
+            if (!_state)
+                radarRoot.style.translate = radarRoot.style.translate = new Translate(Length.Percent(110), 0, 0);
+            else
+                radarRoot.style.translate = new Translate(0, 0, 0);
         }
 
         private void OnRadarGridClicked()
@@ -118,5 +141,6 @@ namespace UI
         {
             return grid.Children().Where(x => x.layout.Contains(_pointerPos)).FirstOrDefault();
         }
+
     }
 }

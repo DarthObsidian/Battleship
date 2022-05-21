@@ -15,6 +15,9 @@ namespace Board
         public GameObject hitObject;
         public GameObject missObject;
 
+        public float hitPosOffset = 0.7f;
+        public float missPosOffset = 0.12f;
+
         int deadShips;
         private List<RuntimeShip> shipList = new List<RuntimeShip>();
 
@@ -113,7 +116,10 @@ namespace Board
             GameObject indicator = _wasHit ? hitObject : missObject;
             Transform parent = tiles[x, y].transform;
             Vector3 pos = parent.position;
-
+            if (_wasHit)
+                pos.y += hitPosOffset;
+            else
+                pos.y += missPosOffset;
             Instantiate(indicator, pos, Quaternion.identity, parent);
         }
     }
