@@ -32,16 +32,16 @@ namespace UI
             radarButton.clicked += OnRadarButtonClick;
             grid.clicked += OnRadarGridClicked;
             TurnManager.AllShipsPlaced += ActivateButton;
-            TurnManager.ActivateUI += HandleActivation;
+            TurnManager.ToggleUI += HandleToggleUI;
 
             ToggleDisplay(radarRoot, false);
             ToggleDisplay(radarButtonRoot, false);
             grid.SetEnabled(false);
         }
 
-        private void HandleActivation()
+        private void HandleToggleUI(bool _state)
         {
-            grid.SetEnabled(true);
+            grid.SetEnabled(_state);
         }
 
         private void OnRadarButtonClick()
@@ -65,8 +65,6 @@ namespace UI
 
         private void OnRadarGridClicked()
         {
-            Debug.Log("Radar clicked");
-
             Vector2 relativePos = MouseToGrid();
             Vector2 cell = CalculateCellNumber(relativePos);
 

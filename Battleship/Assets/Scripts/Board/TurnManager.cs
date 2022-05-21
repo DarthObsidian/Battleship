@@ -10,13 +10,14 @@ namespace Board
         public static UnityAction<string> AllShipsSunk;
         public static UnityAction<string> Message;
         public static UnityAction TurnFinished;
-        public static UnityAction ActivateUI;
+        public static UnityAction<bool> ToggleUI;
         public static UnityAction AllShipsPlaced;
 
         public PlayerLogic player;
         public AILogic ai;
 
         bool isPlayerTurn;
+        bool gameOver;
 
         private void Awake()
         {
@@ -30,7 +31,7 @@ namespace Board
         {
             isPlayerTurn = Random.value > 0.4f;
             if (isPlayerTurn)
-                ActivateUI?.Invoke();
+                ToggleUI?.Invoke(true);
         }
 
         private void HandleAllShipsPlaced()
@@ -41,30 +42,20 @@ namespace Board
 
         private void DoAITurn()
         {
-            Debug.Log("Ai taking turn");
-
-            Vector2Int target;
-            bool alreadyGuessed = true;
-
-            do
-            {
-                target = ai.Fire();
-                if (!player.IsValidTile(target.x, target.y))
-                    continue;
-
-                alreadyGuessed = player.CheckIfTileGuessed(target.x, target.y);
-            }
-            while (alreadyGuessed);
+            List<Vector2Int> guesses = player.GetNotGuessedTiles();
+            Vector2Int target = ai.Fire(guesses);
 
             _ = player.WasTileHit(target.x, target.y);
 
             isPlayerTurn = true;
-            ActivateUI?.Invoke();
-            Debug.Log("ai turn done");
+            ToggleUI?.Invoke(true);
         }
 
         private void HandleAllShipsSunk(string _id)
         {
+            gameOver = true;
+            ToggleUI?.Invoke(false);
+
             string winner = "AI";
             if (_id == winner)
                 winner = "Player";
@@ -79,6 +70,8 @@ namespace Board
 
         private void HandleTurnFinished()
         {
+            if (gameOver)
+                return;
             isPlayerTurn = false;
             StartCoroutine(Waiter());
         }

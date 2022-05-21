@@ -103,6 +103,11 @@ namespace Board
             return true;
         }
 
+        public List<Vector2Int> GetNotGuessedTiles()
+        {
+            return board.GetNotGuessedTiles();
+        }
+
         private void SetIndicator(int x, int y, bool _wasHit)
         {
             GameObject indicator = _wasHit ? hitObject : missObject;

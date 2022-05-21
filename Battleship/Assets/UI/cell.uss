@@ -1,0 +1,35 @@
+.cell {
+    width: 9.09%;
+    height: 9.09%;
+    border-left-color: rgb(0, 100, 0);
+    border-right-color: rgb(0, 100, 0);
+    border-top-color: rgb(0, 100, 0);
+    border-bottom-color: rgb(0, 100, 0);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    align-items: center;
+    justify-content: center;
+}
+
+.radarButton {
+    flex-direction: column;
+    -unity-background-scale-mode: scale-to-fit;
+    background-image: url('project://database/Assets/Art/Sprites/Radar.png?fileID=21300000&guid=799d4089613e31249957513064ba1fea&type=3#Radar');
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    flex-grow: 0;
+    height: 30%;
+}
+
+.radarButton:hover {
+    -unity-background-image-tint-color: rgb(192, 192, 192);
+}
+
+.radarButton:active {
+    -unity-background-image-tint-color: rgb(9, 176, 29);
+}

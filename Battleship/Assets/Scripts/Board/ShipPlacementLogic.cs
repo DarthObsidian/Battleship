@@ -118,9 +118,9 @@ namespace Board
             if (player.AreTilesOccupied(tiles))
                 return;
 
+            player.AddShip(currentShipObject);
             player.SetOccupiedTiles(tiles);
 
-            player.AddShip(currentShipObject);
             ResetCurrentShip();
             ShipButtonManager.ShipPlaced?.Invoke();
         }

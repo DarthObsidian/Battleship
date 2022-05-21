@@ -45,8 +45,6 @@ namespace Board
 
         public bool IsValidTile(int x, int y)
         {
-            if (y >= 10)
-                Debug.Log($"y is 10+ so it should be invalid {y < tiles.Length}");
             return x >= 0 && x < tiles.GetLength(0) && y >= 0 && y < tiles.GetLength(1);
         }
 
@@ -57,7 +55,6 @@ namespace Board
                 if (!IsValidTile(tile.x, tile.y))
                     continue;
 
-                    Debug.Log($"A 10 got through somehow! {tiles.GetLength(1)}");
                 if (tiles[tile.x, tile.y].occupied)
                     return true;
             }
@@ -121,6 +118,18 @@ namespace Board
         public void SetTileGuessed(int x, int y)
         {
             tiles[x, y].alreadyGuessed = true;
+        }
+
+        public List<Vector2Int> GetNotGuessedTiles()
+        {
+            List<Vector2Int> notGuessedTiles = new List<Vector2Int>();
+
+            for (int x = 0; x < tiles.GetLength(0); x++)
+                for (int y = 0; y < tiles.GetLength(1); y++)
+                    if (!tiles[x, y].alreadyGuessed)
+                        notGuessedTiles.Add(new Vector2Int(x, y));
+
+            return notGuessedTiles;
         }
 
         public bool IsTileGuessed(int x, int y)

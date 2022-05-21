@@ -36,18 +36,6 @@ namespace Board
         {
             foreach (Ship ship in ships)
                 PlaceShip(ship);
-
-            string output = "";
-            for (int x = 0; x < gridSize.x; x++)
-            {
-                for (int y = 0; y < gridSize.y; y++)
-                {
-                    int shipType = board.GetShipMapItem(x, y);
-                    output += $"{shipType}\t";
-                }
-                output += "\n";
-            }
-            Debug.Log(output);
         }
 
         private void PlaceShip(Ship _ship)
@@ -66,7 +54,7 @@ namespace Board
                 end.y = (direction.y * length) + start.y;
             }
             while (!board.IsValidTile(end.x, end.y) || !IsValidTile(start.x, start.y));
-            Debug.Log($"{start} {end}");
+
             var tiles = board.GatherTiles(start, end, _ship.hp);
             if (board.AreTilesOccupied(tiles))
             {
@@ -145,9 +133,10 @@ namespace Board
             return board.IsValidTile(x, y);
         }
 
-        public Vector2Int Fire()
+        public Vector2Int Fire(List<Vector2Int> _openTiles)
         {
-            return GetRandomTile();
+            var randomIndex = Random.Range(0, _openTiles.Count - 1);
+            return _openTiles[randomIndex];
         }
     }
 }
