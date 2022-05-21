@@ -108,7 +108,6 @@ namespace Board
             GameObject indicator = _wasHit ? hitObject : missObject;
             Transform parent = tiles[x, y].transform;
             Vector3 pos = parent.position;
-            pos.y += 1;
 
             Instantiate(indicator, pos, Quaternion.identity, parent);
         }

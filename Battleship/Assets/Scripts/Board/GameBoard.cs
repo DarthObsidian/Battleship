@@ -47,7 +47,7 @@ namespace Board
         {
             if (y >= 10)
                 Debug.Log($"y is 10+ so it should be invalid {y < tiles.Length}");
-            return x >= 0 && x < tiles.Length && y >= 0 && y < tiles.Length;
+            return x >= 0 && x < tiles.GetLength(0) && y >= 0 && y < tiles.GetLength(1);
         }
 
         public bool AreTilesOccupied(Vector2Int[] _tiles)
@@ -57,6 +57,7 @@ namespace Board
                 if (!IsValidTile(tile.x, tile.y))
                     continue;
 
+                    Debug.Log($"A 10 got through somehow! {tiles.GetLength(1)}");
                 if (tiles[tile.x, tile.y].occupied)
                     return true;
             }
